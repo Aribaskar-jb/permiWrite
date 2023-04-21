@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { StyleSheet, View, Text, TextInput, TouchableOpacity, Button, Alert } from 'react-native';
 import { object, string } from 'yup';
 import { Formik } from 'formik';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 // import { Button } from 'react-native-web';
 // import Dashboard from './Dashboard';
@@ -10,11 +11,6 @@ let userSchema = object({
     fullName: string()
         .max(50)
         .required('Required'),
-    // lastName: string()
-    //     .max(50)
-    //     .required('Required'),
-    // fullname: string().max(50).required('Required'),
-    // email: string().email('Must be a valid email').required('Email address is required').matches(/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[kgkite | kgcas]+(?:\.[ac.in | com]+)*$/, 'Use your college email only!'),
     email: string()
         .email('Must be a valid email')
         .required('Required')
@@ -26,12 +22,16 @@ let userSchema = object({
 
 
 export default function Register({ navigation }) {
-const [something, setSomething] = useState(false);
-if (something) {
-    button = <Button title='Submit' onPress={() => navigation.navigate('Home')} />;
-} else {
-    button = <Button title='Submit' onPress={() => navigate('Home')} disabled />;
-}
+
+    const handleSubmit = async (values) => {
+        try{
+            await AsyncStorage.setItem('fullname', values.fullName);
+            await AsyncStorage.setItem('rollNo', values.rollNo);
+            navigation.navigate('Home');
+        } catch (error) {
+            console.log(error);
+        }
+    }
 
     return (
         <Formik
@@ -86,7 +86,6 @@ if (something) {
                                 style={styles.rollNo}
                                 placeholder='Roll Number'
                                 placeholderTextColor='grey'
-                                onChange={()=>setSomething(true)}
                             />
 
                             {(errors.rollNo && touched.rollNo) &&
@@ -104,10 +103,10 @@ if (something) {
                                 {/* if(values.lastName==""){
                             console.log("hdsgsgd")
                         } */}
-                                {/* <Button style={styles.Button} title='Submit' onPress={() => navigation.navigate('Home')}/> */}
+                                <Button style={styles.Button} title='Submit' disabled={Object.keys(errors).length !== 0} onPress={handleSubmit}/>
                                 {/* <Button title='Submit' onPress={() => Alert.alert(values.lastName)}/> */}
                                 {/* <Button title='Submit' onPress={() => Alert.alert("Hello")}  disabled/> */}
-                                {button}
+                                {/* {button} */}
                             </View>
                         </View>
                     </View>
