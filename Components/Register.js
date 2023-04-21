@@ -23,15 +23,17 @@ let userSchema = object({
 
 export default function Register({ navigation }) {
 
-    const handleSubmit = async (values) => {
-        try{
-            await AsyncStorage.setItem('fullname', values.fullName);
-            await AsyncStorage.setItem('rollNo', values.rollNo);
-            navigation.navigate('Home');
-        } catch (error) {
-            console.log(error);
-        }
-    }
+    // const handleSubmit = async (values) => {
+    //     if (values.fullName && values.rollNo){
+    //         try{
+    //             await AsyncStorage.setItem('fullName', values.fullName);
+    //             await AsyncStorage.setItem('rollNo', values.rollNo);
+    //             navigation.navigate('Home');
+    //         } catch (error) {
+    //             console.log(error);
+    //         }
+    //     }
+    // }
 
     return (
         <Formik
@@ -91,24 +93,16 @@ export default function Register({ navigation }) {
                             {(errors.rollNo && touched.rollNo) &&
                                 <Text style={styles.errors}>{errors.rollNo}</Text>
                             }
-                        <View>
-                            <TouchableOpacity style={styles.button}>
+                            {/* <TouchableOpacity style={styles.button}> */}
                                 {/* <Text onPress = {() => console.log(values)} style={styles.buttonText} >Submit</Text> */}
                                 {/* <Text style={styles.buttonText} >Submit</Text> */}
                                 {/* <Text>Submit</Text> */}
                                 {/* <Button>Submit</Button> */}
-                            </TouchableOpacity>
+                            {/* </TouchableOpacity> */}
 
                             <View style={styles.Button}>
-                                {/* if(values.lastName==""){
-                            console.log("hdsgsgd")
-                        } */}
-                                <Button style={styles.Button} title='Submit' disabled={Object.keys(errors).length !== 0} onPress={handleSubmit}/>
-                                {/* <Button title='Submit' onPress={() => Alert.alert(values.lastName)}/> */}
-                                {/* <Button title='Submit' onPress={() => Alert.alert("Hello")}  disabled/> */}
-                                {/* {button} */}
+                                <Button style={styles.Button} title='Submit' disabled={Object.keys(errors).length !== 0} onPress={() => {navigation.navigate('Home')}}/>
                             </View>
-                        </View>
                     </View>
                 </View>
             )}
