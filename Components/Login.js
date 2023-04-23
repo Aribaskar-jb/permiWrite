@@ -1,8 +1,9 @@
-import { useState } from 'react';
+// import { useState } from 'react';
 import { StyleSheet, View, Text, TextInput, TouchableOpacity, Button, Alert } from 'react-native';
 import { object, string } from 'yup';
 import { Formik } from 'formik';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+// import Home from './Home';
 
 // import { Button } from 'react-native-web';
 // import Dashboard from './Dashboard';
@@ -21,19 +22,7 @@ let userSchema = object({
 });
 
 
-export default function Register({ navigation }) {
-
-    // const handleSubmit = async (values) => {
-    //     if (values.fullName && values.rollNo){
-    //         try{
-    //             await AsyncStorage.setItem('fullName', values.fullName);
-    //             await AsyncStorage.setItem('rollNo', values.rollNo);
-    //             navigation.navigate('Home');
-    //         } catch (error) {
-    //             console.log(error);
-    //         }
-    //     }
-    // }
+export default function Login({ navigation }) {
 
     return (
         <Formik
@@ -47,7 +36,7 @@ export default function Register({ navigation }) {
 
                     <Text style={styles.headText}>Hello, Before getting into the app,</Text>
 
-                    <Text style={styles.headText}>register yourself by providing your very basic informations.</Text>
+                    <Text style={styles.headText}>Login yourself by providing your very basic informations.</Text>
 
                     <View style={styles.inputContainer}>
                             <TextInput
@@ -101,7 +90,14 @@ export default function Register({ navigation }) {
                             {/* </TouchableOpacity> */}
 
                             <View style={styles.Button}>
-                                <Button style={styles.Button} title='Submit' disabled={Object.keys(errors).length !== 0} onPress={() => {navigation.navigate('Home')}}/>
+                                <Button 
+                                // style={styles.Button} 
+                                title='Submit' 
+                                disabled={Object.keys(errors).length !== 0} 
+                                onPress={() => {navigation.navigate('Home', {paramKey: values.fullName, paramKeyRoll: values.rollNo})}}/>
+                                {/* <Button style={styles.Button} title='Submit' disabled={Object.keys(errors).length !== 0} onPress={handleSubmit}/> */}
+
+                                {/* <Home /> */}
                             </View>
                     </View>
                 </View>
