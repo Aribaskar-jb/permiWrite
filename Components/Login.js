@@ -26,18 +26,18 @@ let userSchema = object({
 
 export default function Login({ navigation }) {
 
-    const addData = async (values) => {
-        // if (myArray[0] !== values.email) {
-          try {
-            const docRef = await addDoc(collection(db, "userData"), values);
-            console.log(values.fullName)
-          } catch (e) {
-            console.error("Error adding document: ", e);
-          }
-        // } else {
-        //   alert("data is there");
-        // }
-      };
+    // const addData = async (values) => {
+    //     // if (myArray[0] !== values.email) {
+    //       try {
+    //         const docRef = await addDoc(collection(db, "userData"), values);
+    //         // console.log(values.fullName)
+    //       } catch (e) {
+    //         console.error("Error adding document: ", e);
+    //       }
+    //     // } else {
+    //     //   alert("data is there");
+    //     // }
+    //   };
 
     return (
         <Formik
@@ -110,7 +110,7 @@ export default function Login({ navigation }) {
                                 title='Submit' 
                                 disabled={Object.keys(errors).length !== 0} 
                                 onPress={() => {
-                                    addData(values)
+                                    // addData(values)
                                     navigation.navigate('Home', {paramKey: values.fullName, paramKeyRoll: values.rollNo})}}/>
                                 {/* <Button style={styles.Button} title='Submit' disabled={Object.keys(errors).length !== 0} onPress={handleSubmit}/> */}
 

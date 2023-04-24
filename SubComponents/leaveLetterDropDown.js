@@ -40,7 +40,7 @@ const DropdownComponent = (props) => {
         onChange={item => {
           setValue(item.value);
           setIsFocus(false);
-          console.log(item.label)
+          // console.log(item.label)
           props.home(item.label)
         }}
         renderLeftIcon={() => (
