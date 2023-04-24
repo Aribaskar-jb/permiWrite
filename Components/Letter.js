@@ -3,6 +3,7 @@ import { StyleSheet, View, Text, TextInput, TouchableOpacity, Button } from 'rea
 import { object, string } from 'yup';
 import DropdownComponent from '../SubComponents/leaveLetterDropDown';
 import { useNavigation } from '@react-navigation/native';
+import { useState } from 'react';
 
 
 let userSchema = object({
@@ -29,7 +30,12 @@ let userSchema = object({
 export default function Letter() {
 
     const navigation = useNavigation();
+    const [dataset,setDataset]=useState("");
     // const [isFocus, setIsFocus] = useState(false);
+    const home=(home)=>{
+        console.log("home"+home)
+        setDataset(home)
+    }
 
     return(
             <Formik
@@ -41,7 +47,7 @@ export default function Letter() {
             {({ handleChange, handleBlur, values, touched, errors }) => (
                 <View style={styles.overAll}>
 
-                    <DropdownComponent />
+                    <DropdownComponent home={home} />
 
                     <View style={styles.inputContainers}>
                         <TextInput
@@ -93,7 +99,9 @@ export default function Letter() {
                                 // style={styles.Button} 
                                 title='Submit' 
                                 // disabled={Object.keys(errors).length !== 0} 
-                                onPress={() => navigation.navigate('Requested')}/>
+                                onPress={() => {
+                                    console.log(dataset)
+                                navigation.navigate('Requested')}}/>
                     </View>
                     </View>
                 </View>
@@ -112,7 +120,7 @@ const styles = StyleSheet.create({
     },
     overAll:{
         backgroundColor: '#fff',
-        paddingBottom: 16
+        paddingBottom: 16,
     },
     datepicker: {
         padding: 20
