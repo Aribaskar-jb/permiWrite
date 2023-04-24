@@ -2,11 +2,27 @@ import { View, Text, Button, StyleSheet, TouchableOpacity } from 'react-native';
 import Letter from './Letter';
 // import { useRoute } from '@react-navigation/native';
 import Requested from './Requested';
+import { useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
 
 export default function Home({route}) {
     const navigation = useNavigation();
     // const route = useRoute;
+    // const [dataset,setDataset]=useState("");
+    // const [description,setDescription]=useState("");
+    // const [fromDate,setFromdate]=useState("");
+    // const [toDate,setTodate]=useState("");
+
+    // const home=(home)=>{
+    //     setDataset(home)
+    // }
+    // const description1=(description,toDate,fromDate)=>{
+    //     setDescription(description)
+    //     setFromdate(fromDate)
+    //     setTodate(toDate)
+    //     console.log(fromDate+""+toDate+""+description)
+        
+    // }
     return(
         <View>
             <View style={styles.overall}>
@@ -28,7 +44,7 @@ export default function Home({route}) {
             </View>
 
             <View style={styles.leaveLetter}>
-                <Letter />
+                <Letter  name={route.params.paramKey} rollno={route.params.paramKeyRoll}/>
             </View>
         </View>
     )
