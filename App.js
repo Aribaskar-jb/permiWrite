@@ -7,6 +7,9 @@ import Login from './Components/Login';
 import Home from './Components/Home';
 import Letter from './Components/Letter';
 import Requested from './Components/Requested';
+import Choose from './Components/Choose';
+import TeacherRegistration from './Components/TeacherRegistration';
+import TeachersDashboard from './Components/TeachersDashboard';
 
 const Stack = createNativeStackNavigator();
 
@@ -14,11 +17,14 @@ const MyStack = () => {
   return (
     <NavigationContainer>
       <Stack.Navigator>
+        <Stack.Screen name="Choose" component={Choose} options={{title: 'Student or Teacher'}}/>
         <Stack.Screen
           name="Login"
           component={Login}
           options={{title: 'Login Page'}}
         />
+        <Stack.Screen name='TeacherRegistration' component={TeacherRegistration} />
+        <Stack.Screen name="TeachersDashboard" component={TeachersDashboard} />
         <Stack.Screen name="Home" component={Home} />
         <Stack.Screen name = "Letter" component={Letter} />
         <Stack.Screen name = "Requested" component={Requested} />
