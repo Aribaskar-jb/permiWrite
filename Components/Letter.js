@@ -38,7 +38,7 @@ export default function Letter(props) {
   const addData = async (value) => {
     // if (myArray[0] !== values.email) {
     try {
-      const docRef = await addDoc(collection(db, "userData"), value);
+      const docRef = await addDoc(collection(db, "studentData"), value);
       console.log("values.fullName")
     } catch (e) {
       console.error("Error adding document: ", e);

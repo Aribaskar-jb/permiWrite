@@ -4,8 +4,8 @@ import { object, string } from 'yup';
 import { Form, Formik } from 'formik';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 // import Home from './Home';
-import { db } from '../Firebase';
-import { collection, addDoc, getDocs } from 'firebase/firestore';
+import { db } from "../Firebase";
+import { collection, addDoc, getDocs } from "firebase/firestore";
 
 // import { Button } from 'react-native-web';
 // import Dashboard from './Dashboard';
@@ -25,19 +25,19 @@ let userSchema = object({
 
 
 export default function TeacherRegistration({ navigation }) {
-
-    // const addData = async (values) => {
-    //     // if (myArray[0] !== values.email) {
-    //       try {
-    //         const docRef = await addDoc(collection(db, "userData"), values);
-    //         // console.log(values.fullName)
-    //       } catch (e) {
-    //         console.error("Error adding document: ", e);
-    //       }
-    //     // } else {
-    //     //   alert("data is there");
-    //     // }
-    //   };
+  // const [dataset, setDataset] = useState("");
+  const addData = async (value) => {
+    // if (myArray[0] !== values.email) {
+    try {
+      const docRef = await addDoc(collection(db, "teacherData"), value);
+      console.log("values.fullName")
+    } catch (e) {
+      console.error("Error adding document: ", e);
+    }
+    // } else {
+    //   alert("data is there");
+    // }
+  };
 
     return (
         <Formik
@@ -89,6 +89,9 @@ export default function TeacherRegistration({ navigation }) {
                                 disabled={Object.keys(errors).length !== 0} 
                                 onPress={() => {
                                     // addData(values)
+                                    addData({
+                                      "name": values.fullName
+                                    })
                                     navigation.navigate('TeachersDashboard', {name: values.fullName})}}/>
                                 {/* <Button style={styles.Button} title='Submit' disabled={Object.keys(errors).length !== 0} onPress={handleSubmit}/> */}
 
