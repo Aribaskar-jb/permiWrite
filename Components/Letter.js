@@ -137,7 +137,7 @@ export default function Letter(props) {
                     "reason": dataset,
                     "name": props.name,
                   });
-                  navigation.navigate("Requested");
+                  navigation.navigate("Requested",{paramKey: props.name});
                 }}
               />
             </View>
