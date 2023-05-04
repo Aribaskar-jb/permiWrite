@@ -7,8 +7,6 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { db } from "../Firebase";
 import { collection, addDoc, getDocs } from "firebase/firestore";
 
-// import { Button } from 'react-native-web';
-// import Dashboard from './Dashboard';
 
 let userSchema = object({
     fullName: string()
@@ -18,25 +16,17 @@ let userSchema = object({
         .email('Must be a valid email')
         .required('Required')
         .matches(/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[kgkite]+(?:\.[ac.in]+)*$/, 'College email only!'),
-    // rollNo: string()
-    //     .max(10)
-    //     .required('Required'),
 });
 
 
 export default function TeacherRegistration({ navigation }) {
-  // const [dataset, setDataset] = useState("");
   const addData = async (value) => {
-    // if (myArray[0] !== values.email) {
     try {
       const docRef = await addDoc(collection(db, "teacherData"), value);
       console.log("values.fullName")
     } catch (e) {
       console.error("Error adding document: ", e);
     }
-    // } else {
-    //   alert("data is there");
-    // }
   };
 
     return (
@@ -84,18 +74,13 @@ export default function TeacherRegistration({ navigation }) {
 
                             <View style={styles.Button}>
                                 <Button 
-                                // style={styles.Button} 
                                 title='Submit' 
                                 disabled={Object.keys(errors).length !== 0} 
                                 onPress={() => {
-                                    // addData(values)
                                     addData({
                                       "name": values.fullName
                                     })
                                     navigation.navigate('TeachersDashboard', {name: values.fullName})}}/>
-                                {/* <Button style={styles.Button} title='Submit' disabled={Object.keys(errors).length !== 0} onPress={handleSubmit}/> */}
-
-                                {/* <Home /> */}
                             </View>
                     </View>
                 </View>
@@ -129,21 +114,10 @@ const styles = StyleSheet.create({
         borderWidth: 1,
         width: 350,
         height: 60,
-        // padding: 4,
         borderRadius: 10,
         marginTop: 20,
         textAlign: 'center'
     },
-    // lastnameInput: {
-    //     borderWidth: 1,
-    //     width: 350,
-    //     height: 60,
-    //     padding: 4,
-    //     textAlign: 'center',
-    //     borderRadius: 10,
-    //     marginTop: 10,
-    //     marginLeft: 10
-    // },
     headText: {
         textAlign: 'center'
     },
@@ -159,30 +133,16 @@ const styles = StyleSheet.create({
         borderWidth: 1,
         width: 350,
         height: 60,
-        // padding: 4,
         borderRadius: 10,
         marginTop: 10,
         textAlign: 'center'
     },
-    // button: {
-    //     alignItems: 'center',
-    //     justifyContent: 'center',
-    //     width: 150,
-    //     height: 60,
-    //     marginTop: 10,
-    //     borderRadius: 10,
-    //     backgroundColor: '#53A6F3',
-    //     marginLeft: 10,
-    // },
     errors: {
         fontSize: 12,
         color: 'red',
         fontWeight: 'medium',
         marginTop: 10,
     },
-    // buttonText: {
-    //     color: 'white'
-    // }
     Button: {
         width: 350,
         marginTop: 10
