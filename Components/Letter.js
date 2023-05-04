@@ -15,12 +15,7 @@ import { db } from "../Firebase";
 import { collection, addDoc, getDocs } from "firebase/firestore";
 
 let userSchema = object({
-  // toDate: string()
-  //     .max(50)
-  //     .required('Required'),
-  //     fromDate: string()
-  //     .max(50)
-  //     .required('Required'),
+
   Description: string().max(50).required("Required"),
   fromDate: string()
     .max(10)
