@@ -16,6 +16,9 @@ let userSchema = object({
         .email('Must be a valid email')
         .required('Required')
         .matches(/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[kgkite]+(?:\.[ac.in]+)*$/, 'College email only!'),
+        phoneNumber: string()
+        .required('Required')
+        .matches(/^[0-9]{10}$/, 'Must be a valid phone number')
 });
 
 
@@ -24,6 +27,7 @@ export default function TeacherRegistration({ navigation }) {
     try {
       const docRef = await addDoc(collection(db, "teacherData"), value);
       console.log("values.fullName")
+      console.log("values.phoneNumber")
     } catch (e) {
       console.error("Error adding document: ", e);
     }
@@ -71,17 +75,56 @@ export default function TeacherRegistration({ navigation }) {
                     </View>
 
                     <View style={styles.inputContainer}>
+                    <TextInput
+                        onChangeText={handleChange('phoneNumber')}
+                        onBlur={handleBlur('phoneNumber')}
+                        value={values.phoneNumber}
+                        style={styles.phoneInput}
+                        placeholder='Phone Number'
+                        placeholderTextColor='grey'
+                        keyboardType='numeric'
+                    />
+                    {(errors.phoneNumber && touched.phoneNumber) &&
+                        <Text style={styles.errors}>{errors.phoneNumber}</Text>
+                    }
+                    </View>
 
-                            <View style={styles.Button}>
+                    <View style={styles.inputContainer}>
+                        {/* <TouchableOpacity
+                            onPress={() => navigation.navigate('TeachersDashboard')}
+                        >
+                            <Text>Submit</Text>
+                        </TouchableOpacity> */}
+                        <TouchableOpacity
+                            onPress={() => {
+                                if (Object.keys(errors).length === 0) {
+                                addData({
+                                    fullName: values.fullName,
+                                    email: values.email,
+                                    phoneNumber: values.phoneNumber
+                                });
+                                navigation.navigate('MainScreen');
+                                } else {
+                                Alert.alert('Error', 'Please fill out all required fields correctly.');
+                                }
+                            }}
+                            style={styles.button}>
+                            <Text style={styles.buttonText}>Submit</Text>
+                            </TouchableOpacity>
+
+
+
+                            {/* <View style={styles.Button}>
                                 <Button 
-                                title='Submit' 
+                                title='Get OTP' 
                                 disabled={Object.keys(errors).length !== 0} 
                                 onPress={() => {
                                     addData({
-                                      "name": values.fullName
+                                      "name": values.fullName,
+                                      "phNo": values.phoneNumber
                                     })
-                                    navigation.navigate('TeachersDashboard', {name: values.fullName})}}/>
-                            </View>
+                                    navigation.navigate('OTPVerification')}}/>
+                            </View> */}
                     </View>
                 </View>
             )}
@@ -101,6 +144,14 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center'
     },
+    phoneInput: {
+        borderWidth: 1,
+        width: 350,
+        height: 60,
+        borderRadius: 10,
+        marginTop: 10,
+        textAlign: 'center'
+      },
     title: {
       fontSize: 24,
       fontWeight: 'bold',
@@ -143,8 +194,18 @@ const styles = StyleSheet.create({
         fontWeight: 'medium',
         marginTop: 10,
     },
-    Button: {
+    button: {
+        backgroundColor: '#007AFF',
         width: 350,
-        marginTop: 10
-    }
+        borderRadius: 10,
+        paddingHorizontal: 20,
+        paddingVertical: 10,
+        alignItems: 'center',
+        marginTop: 20,
+      },
+      buttonText: {
+        color: '#FFFFFF',
+        fontSize: 18,
+        fontWeight: 'bold',
+      },
 })

@@ -1,33 +1,60 @@
 import React, { useState, useEffect } from "react";
 import { useNavigation } from "@react-navigation/native";
 import { db } from "../Firebase";
-import { collection, getDocs } from "firebase/firestore";
+import { collection, getDocs, onSnapshot, doc, updateDoc } from "firebase/firestore";
 import { StyleSheet, Text, View, ScrollView } from "react-native";
-import { Button, Card, Avatar } from "react-native-paper";
+import { Card, Avatar } from "react-native-paper";
 
 export default function Requested({ route }) {
   const navigation = useNavigation();
   const [data, setData] = useState([]);
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const querySnapshot = await getDocs(collection(db, "studentData"));
-        const data = [];
-        querySnapshot.forEach((doc) => data.push(doc.data()));
-        setData(data);
-      } catch (error) {
-        console.error(error);
-      }
+    const fetchStudentData = async () => {
+      const querySnapshot = await getDocs(collection(db, "studentData"));
+      const data = [];
+      querySnapshot.forEach((doc) => data.push({ id: doc.id, ...doc.data() }));
+      setData(data);
     };
-
-    fetchData();
+  
+    fetchStudentData();
+  
+    const unsubscribe = onSnapshot(collection(db, "studentData"), (querySnapshot) => {
+      const data = [];
+      querySnapshot.forEach((doc) => data.push({ id: doc.id, ...doc.data() }));
+      setData(data);
+    });
+  
+    return unsubscribe;
   }, []);
+  
+  
+  const updateStatus = async (id, newStatus) => {
+    try {
+      const studentRef = doc(db, "studentData", id);
+      await updateDoc(studentRef, { status: newStatus });
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  if (!route.params || !route.params.paramKey) {
+    return null;
+  }
 
   return (
     <ScrollView style={styles.container}>
       {data.map((item) => {
         if (item.name === route.params.paramKey) {
+          let statusStyle = styles.statusPending;
+          let statusText = "Pending";
+          if (item.status === "approved") {
+            statusStyle = styles.statusApproved;
+            statusText = "Approved";
+          } else if (item.status === "denied") {
+            statusStyle = styles.statusDenied;
+            statusText = "Denied";
+          }
           return (
             <Card key={item.id} style={styles.card}>
               <Card.Title
@@ -42,7 +69,7 @@ export default function Requested({ route }) {
                 )}
               />
               <Card.Content>
-              <Text style={styles.text}>
+                <Text style={styles.text}>
                   <Text style={styles.label}>Reason: </Text>
                   {item.reason}
                 </Text>
@@ -58,12 +85,11 @@ export default function Requested({ route }) {
                   <Text style={styles.label}>Description: </Text>
                   {item.description}
                 </Text>
+                <Text style={[styles.text, statusStyle]}>
+                  <Text style={styles.label}>Status: </Text>
+                  {statusText}
+                </Text>
               </Card.Content>
-              <Card.Actions>
-                {/* <Button>Cancel</Button>
-                <Button>Ok</Button> */}
-                <Text style={styles.status}>pending</Text>
-              </Card.Actions>
             </Card>
           );
         }
@@ -87,7 +113,16 @@ const styles = StyleSheet.create({
   text: {
     marginVertical: 4,
   },
-  status: {
-    color: "lightgray"
-  }
+  statusPending: {
+    color: "orange",
+    fontWeight: "bold",
+  },
+  statusApproved: {
+    color: "green",
+    fontWeight: "bold",
+  },
+  statusDenied: {
+    color: "red",
+    fontWeight: "bold",
+  },
 });

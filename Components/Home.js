@@ -1,44 +1,11 @@
 import { View, Text, Button, StyleSheet, TouchableOpacity } from 'react-native';
 import Letter from './Letter';
-// import { useRoute } from '@react-navigation/native';
-import Requested from './Requested';
-import { useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
 
 export default function Home({route}) {
     const navigation = useNavigation();
-    // const route = useRoute;
-    // const [dataset,setDataset]=useState("");
-    // const [description,setDescription]=useState("");
-    // const [fromDate,setFromdate]=useState("");
-    // const [toDate,setTodate]=useState("");
-
-    // const home=(home)=>{
-    //     setDataset(home)
-    // }
-    // const description1=(description,toDate,fromDate)=>{
-    //     setDescription(description)
-    //     setFromdate(fromDate)
-    //     setTodate(toDate)
-    //     console.log(fromDate+""+toDate+""+description)
-        
-    // }
     return(
-        <View>
-            <View style={styles.overall}>
-
-                <TouchableOpacity style={styles.Button}>
-                    {/* <Text style={styles.leaveLetter} onPress={() => navigation.navigate('Home')}>Write Mail</Text> */}
-                    <Text style={styles.leaveLetter}>Write Mail</Text>
-
-                </TouchableOpacity>
-
-                <TouchableOpacity style={styles.Button2}>
-                    <Text style={styles.requestPage} onPress={() => navigation.push('Requested')}>View Requested</Text>
-                </TouchableOpacity>
-
-            </View>
-
+        <View style={styles.overall}>
             <View>
                 <Text style={styles.welcome}>Hello, {route.params.paramKey} from {route.params.paramKeyRoll}.</Text>
             </View>
@@ -46,42 +13,51 @@ export default function Home({route}) {
             <View style={styles.leaveLetter}>
                 <Letter  name={route.params.paramKey} rollno={route.params.paramKeyRoll}/>
             </View>
+
+            {/* Button to redirect to Requested page */}
+            {/* <TouchableOpacity style={styles.Button} onPress={() => navigation.navigate('Requested')}>
+                <Text style={{color: '#000000'}}>View Requested Permissions</Text>
+            </TouchableOpacity> */}
         </View>
     )
 }
 
 const styles = StyleSheet.create({
     overall:{
-        flexDirection: 'row',
+        flexDirection: 'column',
         justifyContent: 'space-evenly',
-        alignItems: 'center'
+        // alignItems: 'center',
+        backgroundColor: "#fff",
     },
-    Button:{
-        // marginTop: 10,
+    Button: {
         backgroundColor: '#ffffff',
         width: 200,
-        paddingTop: 15,
-        paddingBottom: 15,
-        paddingLeft: 15,
-        color: '#d9d9d9',
-        // justifyContent: 'center'
-        alignItems: 'center'
+        height: 50,
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginTop: 20,
+        borderRadius: 10,
+        borderWidth: 1,
+        borderColor: '#000000',
+        shadowColor: '#000000',
+        shadowOffset: {
+            width: 0,
+            height: 2,
+        },
+        shadowOpacity: 0.25,
+        shadowRadius: 3.84,
+        elevation: 5,
+    },
+    buttonText: {
+        color: '#000000',
+        fontWeight: 'bold',
+        fontSize: 16,
     },
     requestPage: {
         opacity: .54
     },
     leaveLetter: {
         opacity: 1
-      },
-    Button2: {
-        backgroundColor: '#ffffff',
-        width: 200,
-        paddingTop: 15,
-        paddingBottom: 15,
-        paddingLeft: 15,
-        color: '#d9d9d9',
-        // justifyContent: 'flex-start'
-        alignItems: 'center',
     },
     welcome: {
         fontWeight: '900',

@@ -13,6 +13,9 @@ import { useNavigation } from "@react-navigation/native";
 import { useState } from "react";
 import { db } from "../Firebase";
 import { collection, addDoc, getDocs } from "firebase/firestore";
+import DateTimePickerModal from "react-native-modal-datetime-picker";
+import { AntDesign } from '@expo/vector-icons';
+
 
 let userSchema = object({
 
@@ -20,14 +23,50 @@ let userSchema = object({
   fromDate: string()
     .max(10)
     .matches(/^[0-9/]*$/, 'only "DD/MM/YYYY"'),
-  // Description: string()
-  //     .Description('Must be a valid Description')
-  //     .required('Required')
-  //     .matches(/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[kgkite]+(?:\.[ac.in]+)*$/, 'College Description only!'),
   rollNo: string().max(10).required("Required"),
 });
 
 export default function Letter(props) {
+
+  const [isFromDateVisible, setFromDateVisibility] = useState(false);
+  const [isToDateVisible, setToDateVisibility] = useState(false);
+  const [fromDate, setFromDate] = useState('');
+  const [toDate, setToDate] = useState('');
+
+  const showFromDatePicker = () => {
+    setFromDateVisibility(true);
+  };
+
+  const hideFromDatePicker = () => {
+    setFromDateVisibility(false);
+  };
+
+  const handleFromDateConfirm = (date) => {
+    setFromDate(date.toDateString());
+    hideFromDatePicker();
+  };
+
+  const showToDatePicker = () => {
+    setToDateVisibility(true);
+  };
+
+  const hideToDatePicker = () => {
+    setToDateVisibility(false);
+  };
+
+  const handleToDateConfirm = (date) => {
+    setToDate(date.toDateString());
+    hideToDatePicker();
+  };
+
+  const handleSubmit = () => {
+    firebase.database().ref('dates').push({
+      from: fromDate,
+      to: toDate,
+    });
+  };
+
+
   const navigation = useNavigation();
   const [dataset, setDataset] = useState("");
   const addData = async (value) => {
@@ -81,7 +120,7 @@ export default function Letter(props) {
             )}
           </View>
 
-          <View style={styles.parentView}>
+          {/* <View style={styles.parentView}>
             <View style={styles.containedView1}>
               <Text style={styles.text1}>From Date</Text>
               <TextInput
@@ -106,11 +145,39 @@ export default function Letter(props) {
                 placeholder="DD/MM/YYYY"
                 placeholderTextColor="grey"
               />
-              {/* {(errors.toDate && touched.toDate) &&
-                                <Text style={styles.errors}>{errors.toDate}</Text>
-                            } */}
             </View>
-          </View>
+          </View> */}
+
+          <View style={styles.container}>
+      <View style={styles.datePickerContainer}>
+        <TouchableOpacity onPress={showFromDatePicker}>
+          <AntDesign name="calendar" size={24} color="black" />
+          <Text style={styles.datePickerText}>{fromDate || 'From Date'}</Text>
+        </TouchableOpacity>
+        <DateTimePickerModal
+          isVisible={isFromDateVisible}
+          mode="date"
+          onConfirm={handleFromDateConfirm}
+          onCancel={hideFromDatePicker}
+        />
+      </View>
+      <View style={styles.datePickerContainer}>
+        <TouchableOpacity onPress={showToDatePicker}>
+          <AntDesign name="calendar" size={24} color="black" />
+          <Text style={styles.datePickerText}>{toDate || 'To Date'}</Text>
+        </TouchableOpacity>
+        <DateTimePickerModal
+          isVisible={isToDateVisible}
+          mode="date"
+          onConfirm={handleToDateConfirm}
+          onCancel={hideToDatePicker}
+        />
+      </View>
+      {/* <TouchableOpacity style={styles.submitButton} onPress={handleSubmit}>
+        <Text style={styles.submitButtonText}>Submit</Text>
+      </TouchableOpacity> */}
+    </View>
+
           <View style={styles.inputContainer}>
             <View style={styles.Button}>
               <Button
@@ -204,25 +271,6 @@ const styles = StyleSheet.create({
     marginTop: 10,
     textAlign: "center",
   },
-  fromDate: {
-    borderWidth: 1,
-    width: 170,
-    height: 60,
-    // padding: 4,
-    borderRadius: 10,
-    marginTop: 10,
-    textAlign: "center",
-    // paddingTop: 20
-  },
-  toDate: {
-    borderWidth: 1,
-    width: 170,
-    height: 60,
-    // padding: 4,
-    borderRadius: 10,
-    marginTop: 10,
-    textAlign: "center",
-  },
   errors: {
     fontSize: 12,
     color: "red",
@@ -244,5 +292,22 @@ const styles = StyleSheet.create({
   text2: {
     paddingTop: 10,
     fontWeight: "900",
+  },
+  container: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-evenly',
+    paddingTop: 10,
+  },
+  iconButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#eee',
+    borderRadius: 10,
+    padding: 10,
+    marginBottom: 20,
+  },
+  label: {
+    marginLeft: 10,
   },
 });

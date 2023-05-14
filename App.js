@@ -10,6 +10,9 @@ import Requested from './Components/Requested';
 import Choose from './Components/Choose';
 import TeacherRegistration from './Components/TeacherRegistration';
 import TeachersDashboard from './Components/TeachersDashboard';
+import OTPVerification from './Components/OTPVerification';
+import TeacherRequestsPage from './Components/TeacherRequestsPage';
+import MainScreen from './Components/MainScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -28,6 +31,10 @@ const MyStack = () => {
         <Stack.Screen name="Home" component={Home} />
         <Stack.Screen name = "Letter" component={Letter} />
         <Stack.Screen name = "Requested" component={Requested} />
+        <Stack.Screen name = "OTPVerification" component={OTPVerification} />
+        <Stack.Screen name = "TeacherRequestsPage" component={TeacherRequestsPage} icon = 'menu' />
+        <Stack.Screen name = "MainScreen" component={MainScreen} />
+
       </Stack.Navigator>
     </NavigationContainer>
   );
